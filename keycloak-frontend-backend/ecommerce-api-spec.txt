@@ -1,0 +1,159 @@
+spec: "arazzo/v1"
+info:
+  title: E-commerce API Workflow
+  version: 1.0.0
+  description: API specification for an e-commerce platform
+
+workflows:
+  user_journey:
+    steps:
+      - name: signup
+        description: User registration
+        request:
+          method: POST
+          path: /api/users/signup
+          body:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    username:
+                      type: string
+                    email:
+                      type: string
+                    password:
+                      type: string
+        response:
+          status: 201
+          body:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    username:
+                      type: string
+                    email:
+                      type: string
+
+      - name: login
+        description: User authentication
+        request:
+          method: POST
+          path: /api/users/login
+          body:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+        response:
+          status: 200
+          body:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+
+      - name: get_product_catalog
+        description: Retrieve product catalog
+        request:
+          method: GET
+          path: /api/products
+          query:
+            page:
+              type: integer
+            limit:
+              type: integer
+        response:
+          status: 200
+          body:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    products:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          price:
+                            type: number
+                          description:
+                            type: string
+
+      - name: create_order
+        description: Place an order
+        request:
+          method: POST
+          path: /api/orders
+          body:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    products:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          quantity:
+                            type: integer
+        response:
+          status: 201
+          body:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    orderId:
+                      type: string
+                    totalAmount:
+                      type: number
+
+      - name: send_email_notification
+        description: Send order confirmation email
+        request:
+          method: POST
+          path: /api/notifications/email
+          body:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    to:
+                      type: string
+                    subject:
+                      type: string
+                    body:
+                      type: string
+        response:
+          status: 200
+          body:
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
